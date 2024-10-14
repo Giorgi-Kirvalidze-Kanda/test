@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import {Practitioner} from './practitioner.model';
+import {PostCodeExchangeDtoResponse} from './post-code-exchange-response.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +14,15 @@ export class FhirService {
     const options = {
       clientId: 'example-client',         // Replace with client ID
       redirectUri: 'http://localhost:4200/',   // Replace with redirect URI
-      iss: 'https://r2.smarthealthit.org',              // Replace with FHIR server issuer URL
+      iss: 'https://r2.smarthealthit.org',       // Replace with FHIR server issuer URL
       scope: 'launch openid fhirUser user/*.read'    // Define the necessary scopes
     };
     await FHIR.oauth2.authorize(options);
   }
 
-  async initFhirClientAfterRedirect() {
+  async initFhirClient(postCodeExchangeDtoResponse: PostCodeExchangeDtoResponse) {
     this._client = await FHIR.oauth2.ready();
+    this._client.state.tokenResponse = postCodeExchangeDtoResponse;
     return this._client;
   }
 

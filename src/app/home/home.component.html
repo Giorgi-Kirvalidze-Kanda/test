@@ -1,6 +1,17 @@
 <h1>Welcome to the FHIR Epic App!</h1>
-@if(accessToken()) {
+@if (!accessToken()) {
+  <div>
+    <h2>Launch Smart Login: </h2>
+    <button (click)="launchSmartLogin()">
+      Sign In
+    </button>
+  </div>
+} @else {
   <p>Your access token: {{ accessToken() }}</p>
+  <strong>You can now fetch Practitioner Data using <i>Access token</i></strong>
+  <button (click)="getCurrentlyLoggedInPractitioner()">
+    Fetch
+  </button>
 }
 
 @if (currentPractitioner()) {
@@ -62,8 +73,8 @@
       </tbody>
     </table>
   </div>
-}
+} @else {}
 
-@if (isLoading()) {
+@if (isPractitionerLoading()) {
   <h2>Loading Practitioner Data...</h2>
 }
