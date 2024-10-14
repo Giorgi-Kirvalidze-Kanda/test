@@ -1,0 +1,69 @@
+<h1>Welcome to the FHIR Epic App!</h1>
+@if(accessToken()) {
+  <p>Your access token: {{ accessToken() }}</p>
+}
+
+@if (currentPractitioner()) {
+  <div class="container">
+    <h1>Practitioner Details</h1>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Field</th>
+        <th>Value</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>ID</td>
+        <td>{{ currentPractitioner()?.id }}</td>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td>{{ (currentPractitioner()?.name?.[0]?.prefix?.join(' ') || '') + ' ' + currentPractitioner()?.name?.[0]?.given?.join(' ') + ' ' + currentPractitioner()?.name?.[0]?.family }}</td>
+      </tr>
+      <tr>
+        <td>Gender</td>
+        <td>{{ currentPractitioner()?.gender }}</td>
+      </tr>
+      <tr>
+        <td>Active</td>
+        <td>{{ currentPractitioner()?.active ? 'Yes' : 'No' }}</td>
+      </tr>
+      <tr>
+        <td>Identifier</td>
+        <td>{{ currentPractitioner()?.identifier?.[0]?.value }}
+          (NPI: {{ currentPractitioner()?.identifier?.[0]?.system }})
+        </td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td>
+          {{ currentPractitioner()?.address?.[0]?.line?.join(', ') }},
+          {{ currentPractitioner()?.address?.[0]?.city }},
+          {{ currentPractitioner()?.address?.[0]?.state }}
+          {{ currentPractitioner()?.address?.[0]?.postalCode }},
+          {{ currentPractitioner()?.address?.[0]?.country }}
+        </td>
+      </tr>
+      <tr>
+        <td>Last Updated</td>
+        <td>{{ currentPractitioner()?.meta?.lastUpdated }}</td>
+      </tr>
+      <tr>
+        <td>Source</td>
+        <td>{{ currentPractitioner()?.meta?.source }}</td>
+      </tr>
+      <tr>
+        <td>Tag</td>
+        <td>{{ currentPractitioner()?.meta?.tag?.[0]?.code }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+}
+
+@if (isLoading()) {
+  <h2>Loading Practitioner Data...</h2>
+}
